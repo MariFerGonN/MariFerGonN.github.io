@@ -1,17 +1,31 @@
-document.getElementById('login-form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form submission
+(function () {
+    'use strict';
 
-    // Get the values from the form
-    var username = document.getElementById('username').value;
-    var password = document.getElementById('password').value;
+    // Función para verificar si una cadena es un correo electrónico válido
+    function validarCorreo(correo) {
+        var regex = /^\S+@\S+\.\S+$/;
+        return regex.test(correo);
+    }
 
-    // Here you can implement your login logic
-    // For simplicity, let's just log the values to the console
-    console.log("Username:", username);
-    console.log("Password:", password);
+    // Función para prevenir la inyección de SQL en una cadena
+    function prevenirInyeccionSQL(entrada) {
+        // Eliminar caracteres peligrosos como comillas simples y dobles
+        entrada = entrada.replace(/'/g, "");
+        entrada = entrada.replace(/"/g, "");
+        // Podrían agregarse más medidas de seguridad aquí según las necesidades específicas
+        return entrada;
+    }
 
-    // Clear the form fields
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
-});
+    // Ejemplos de uso de las funciones
+    var correoValido = "usuario@example.com",
+        correoInvalido = "correoinvalido",
+        consultaSQL = "SELECT * FROM usuarios WHERE username='",
+        entradaUsuario = "'; DROP TABLE usuarios; --";
+
+    console.log("Correo válido: " + validarCorreo(correoValido));
+    console.log("Correo inválido: " + validarCorreo(correoInvalido));
+
+    console.log("Consulta SQL segura: " + prevenirInyeccionSQL(consultaSQL));
+    console.log("Entrada de usuario segura: " + prevenirInyeccionSQL(entradaUsuario));
+})();
 
