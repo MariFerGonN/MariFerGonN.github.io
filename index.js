@@ -1,32 +1,27 @@
-(function () {
-    'use strict';
+document.addEventListener('DOMContentLoaded', function () {
+    var formulario = document.getElementById('login-form');
+    var emailInput = document.getElementById('email');
+    var emailError = document.getElementById('emailError');
+
+    formulario.addEventListener('submit', function (event) {
+        if (!validarCorreo(emailInput.value)) {
+            emailError.textContent = 'Por favor ingresa un correo electrónico válido.';
+            event.preventDefault(); // Evita que el formulario se envíe si la validación falla
+        }
+    });
+
+    emailInput.addEventListener('blur', function () {
+        if (emailInput.value !== '' && !validarCorreo(emailInput.value)) {
+            emailError.textContent = 'Por favor ingresa un correo electrónico válido.';
+        } else {
+            emailError.textContent = '';
+        }
+    });
 
     // Función para verificar si una cadena es un correo electrónico válido
     function validarCorreo(correo) {
         var regex = /^\S+@\S+\.\S+$/;
         return regex.test(correo);
     }
-
-    // Función para prevenir la inyección de SQL en una cadena
-    function prevenirInyeccionSQL(entrada) {
-        // Eliminar caracteres peligrosos como comillas simples y dobles
-        entrada = entrada.replace(/'/g, "");
-        entrada = entrada.replace(/"/g, "");
-        // Podrían agregarse más medidas de seguridad aquí según las necesidades específicas
-        return entrada;
-    }
-
-    // Ejemplos de uso de las funciones
-    var correoValido = "usuario@example.com",
-        correoInvalido = "correoinvalido",
-        consultaSQL = "SELECT * FROM usuarios WHERE username='",
-        entradaUsuario = "'; DROP TABLE usuarios; --";
-
-    console.log("Correo válido: " + validarCorreo(correoValido));
-    console.log("Correo inválido: " + validarCorreo(correoInvalido));
-
-    console.log("Consulta SQL segura: " + prevenirInyeccionSQL(consultaSQL));
-    console.log("Entrada de usuario segura: " + prevenirInyeccionSQL(entradaUsuario));
-})();
-
+});
 
