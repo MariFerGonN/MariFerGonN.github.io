@@ -1,30 +1,46 @@
-import java.util.regex.*;
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('login-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
 
-public class Main {
-    public static void main(String[] args) {
-        String correoValido = "usuario@example.com";
-        String correoInvalido = "usuario@example";
+    form.addEventListener('submit', function (event) {
+        // Validación del correo electrónico
+        if (!isValidEmail(emailInput.value)) {
+            event.preventDefault(); // Evitar que el formulario se envíe
+            emailError.textContent = 'Por favor ingrese un correo electrónico válido.';
+            emailInput.focus();
+            return;
+        } else {
+            emailError.textContent = ''; // Limpiar mensaje de error si es válido
+        }
 
-        System.out.println("Correo válido: " + validarCorreo(correoValido));
-        System.out.println("Correo inválido: " + validarCorreo(correoInvalido));
+        // Validación de la contraseña
+        if (!isValidPassword(passwordInput.value)) {
+            event.preventDefault(); // Evitar que el formulario se envíe
+            passwordError.textContent = 'La contraseña no puede contener caracteres especiales.';
+            passwordInput.focus();
+            return;
+        } else {
+            passwordError.textContent = ''; // Limpiar mensaje de error si es válida
+        }
 
-        String consultaSQL = "SELECT * FROM usuarios WHERE username='usuario' AND password='password'";
-        String entradaUsuario = "'; DROP TABLE usuarios; --";
+        // Mostrar mensaje de usuario registrado en la consola
+        console.log('Usuario registrado exitosamente.');
 
-        System.out.println("Consulta SQL segura: " + prevenirInyeccionSQL(consultaSQL));
-        System.out.println("Entrada de usuario segura: " + prevenirInyeccionSQL(entradaUsuario));
-    }
+        // Si todo está bien, el formulario se enviará normalmente
+    });
 
     // Función para verificar si una cadena es un correo electrónico válido
-    public static boolean validarCorreo(String correo) {
-        String regex = "^(.+)@(.+)$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(correo);
-        return matcher.matches();
+    function isValidEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
     }
 
-    // Función para prevenir inyecciones SQL
-    public static String prevenirInyeccionSQL(String consulta) {
-        return consulta.replaceAll("'", "''");
+    // Función para verificar si la contraseña contiene caracteres especiales
+    function isValidPassword(password) {
+        const regex = /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g;
+        return !regex.test(password);
     }
-}
+});
