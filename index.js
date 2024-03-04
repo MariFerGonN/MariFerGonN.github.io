@@ -7,14 +7,16 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!validarCorreo(emailInput.value)) {
             emailError.textContent = 'Por favor ingresa un correo electrónico válido.';
             event.preventDefault(); // Evita que el formulario se envíe si la validación falla
+        } else {
+            emailError.textContent = ''; // Borra el mensaje de error si la validación es exitosa
         }
     });
 
-    emailInput.addEventListener('blur', function () {
+    emailInput.addEventListener('input', function () {
         if (emailInput.value !== '' && !validarCorreo(emailInput.value)) {
             emailError.textContent = 'Por favor ingresa un correo electrónico válido.';
         } else {
-            emailError.textContent = '';
+            emailError.textContent = ''; // Borra el mensaje de error si el correo es válido
         }
     });
 
@@ -24,4 +26,3 @@ document.addEventListener('DOMContentLoaded', function () {
         return regex.test(correo);
     }
 });
-
