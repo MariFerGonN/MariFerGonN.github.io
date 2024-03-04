@@ -29,3 +29,4 @@
     console.log("Entrada de usuario segura: " + prevenirInyeccionSQL(entradaUsuario));
 })();
 
+
